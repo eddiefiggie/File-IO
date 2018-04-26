@@ -1,6 +1,6 @@
 /*****************************************************************
  * Name: Edwin Figueroa
- * Date: 4/21/18
+ * Date: 4/26/18
  *
- * Description: Test DB Connection with Sqlite
+ * Description: Process Poll Data
  *****************************************************************/

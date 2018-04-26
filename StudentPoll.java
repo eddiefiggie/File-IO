@@ -18,10 +18,9 @@ public class StudentPoll {
 
     public static void main(String[] args) {
         Formatter numbers = new Formatter();
-        Scanner input = new Scanner(System.in);
-        
-        
+        Scanner input = new Scanner(System.in);       
 
+        // create the file
         try {
             numbers = new Formatter("numbers.txt");
         }
@@ -43,10 +42,11 @@ public class StudentPoll {
                 rating = input.nextInt();                
             }
             catch (InputMismatchException e) {
-                System.out.print("Invalid entry, try again: ");
+                System.out.println(e.getMessage());
                 rating = input.nextInt();
             }
             
+            // Send qualified data to the output file
             if(rating > 0 && rating < 6) {
                 numbers.format("%d\n", rating);
                 rating = 0;

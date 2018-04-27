@@ -1,24 +1,23 @@
 /*****************************************************************
  * Name: Edwin Figueroa
- * Date: 4/26/18
+ * Date: 4/27/18
  *
  * Description: Create a file and store sequential data
  *****************************************************************/
 
 import java.io.FileNotFoundException;
-import java.lang.SecurityException; // Do I need to import lang?
 import java.util.Formatter;
-import java.util.FormatterClosedException;
-import java.util.NoSuchElementException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class StudentPoll {
 
+    private static Scanner input = new Scanner(System.in);
 
     public static void main(String[] args) {
-        Formatter numbers = new Formatter();
-        Scanner input = new Scanner(System.in);       
+        Formatter numbers = new Formatter();        
+        int rating = 6;
+        boolean continueEntry = true; // captures the exit program feedback    
 
         // create the file
         try {
@@ -33,33 +32,55 @@ public class StudentPoll {
             System.exit(1);
         }
 
-        // User Input (Data Collection)
-        boolean dataEntry = false;
-        while(dataEntry == false) {
-            int rating = 0;
-            try {
-                System.out.print("How would you rate this Java Application: ");
-                rating = input.nextInt();                
-            }
-            catch (InputMismatchException e) {
-                System.out.println(e.getMessage());
-                rating = input.nextInt();
-            }
-            
-            // Send qualified data to the output file
-            if(rating > 0 && rating < 6) {
-                numbers.format("%d\n", rating);
-                rating = 0;
+        // User Input (Data Collection)        
+        while(continueEntry == true) { 
+            rating = dataCollection();  
+            // Commits valid data to output using method format. 
+            if(rating != 0) {
+                System.out.println("---------------------------------");
+                System.out.println("Your entry [ " + rating + " ] was saved.");
+                System.out.println("---------------------------------");
+                numbers.format("%d\n", rating); // commit data to text file.
+                rating = 6;
             }
             else {
                 numbers.close();
+                System.out.println();
                 System.out.println("Exiting Program.");
-                dataEntry = true;                
+                System.out.println();
+                continueEntry = false;
+            }        
+        }
+    } // main()
+
+    public static int dataCollection() {
+        // Data integrity method (only 0-5 integers are valid)
+        while(true) {
+            int rate = 6;
+            try {
+                System.out.println("Rate this Java app on a scale of 1 through 5.");
+                System.out.println("Type 0 then enter to exit.");
+                System.out.print("Your rating: ");
+                rate = input.nextInt();
+                while(rate < 0 || rate > 5) {
+                    notSaved();
+                    System.out.print("Your rating: ");
+                    rate = input.nextInt();
+                }
+                return rate;               
+            }
+            catch (InputMismatchException e) {
+                notSaved();
+                input.nextLine();
             }
         }
+    } // dataCollection()
 
-
-    } // main()     
+    public static void notSaved() {
+        System.out.println("---------------------------------");
+        System.out.println("ENTRY NOT SAVED: INVALID ENTRY");
+        System.out.println("---------------------------------");
+    } // notSaved()
         
 } // class
 
